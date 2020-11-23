@@ -1,0 +1,34 @@
+version: "3"
+services:
+    kibana:
+        image: kibana:7.9.3
+        ports:
+            - "5601:5601"
+        volumes:
+            - ./kibana/ca:/kibana/ca
+            - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+        networks:
+            - elk_network
+    elasticsearch:
+        image: elasticsearch:7.9.3
+        environment: 
+            - discovery.type=single-node
+        #volumes:
+            #- ./elasticsearch/certs:/usr/share/elasticsearch/config/certs
+            #- ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+        ports:
+            - "9200:9200"
+            - "9300:9300"
+        networks:
+            - elk_network
+    logstash:
+        image: logstash:7.9.3
+        volumes:
+            - ./logstash:/logstash
+        networks:
+            - elk_network
+
+networks:
+    elk_network:
+        driver: bridge
+
