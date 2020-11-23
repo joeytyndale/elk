@@ -4,6 +4,9 @@ services:
         image: kibana:7.9.3
         ports:
             - "5601:5601"
+        environment: 
+            - ELASTIC_USERNAME=elastic
+            - ELASTIC_PASSWORD=changeme
         volumes:
             - ./kibana/ca:/kibana/ca
             - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
@@ -13,9 +16,11 @@ services:
         image: elasticsearch:7.9.3
         environment: 
             - discovery.type=single-node
-        #volumes:
-            #- ./elasticsearch/certs:/usr/share/elasticsearch/config/certs
-            #- ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+            - ELASTIC_USERNAME=elastic
+            - ELASTIC_PASSWORD=changeme
+        volumes:
+            - ./elasticsearch/certs:/usr/share/elasticsearch/config/certs
+            - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
         ports:
             - "9200:9200"
             - "9300:9300"
